@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "./NFProof.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
 contract TokenGate is Ownable {
 
@@ -10,46 +10,26 @@ contract TokenGate is Ownable {
   //or is the address of the NFP assigned owner
 
     uint256 public gatePrice;
-    NFProof public nfProof;
 
-    event EnterGate(string eventName, bytes32 eventHash, address user, uint256 time, address eventContractAddress, uint256 eventTokenId, bytes32 entranceHash);
+    event EnterGate(string eventName, address user, bytes32 entranceHash, uint256 time, address eventContractAddress, uint256 eventTokenId, bytes32 eventHash);
 
-    constructor(address payable proofContract) {
-      nfProof = NFProof(proofContract);
+    constructor() {
       gatePrice = 0;
     }
    
     function setGatePrice(uint256 newPrice) external onlyOwner {
-      gatePrice=newPrice;
+        require(newPrice >= 0, "must include valid price");
+        gatePrice=newPrice;
     }
-
 
     //this just adds some functionality if you want to enter a passcode
     //entrance Hash is computed by the ticketgate/booth. and used to listen for events with that hash
-    function enterGate(string eventName, bytes32 entranceHash, address eventContractAddress, uint256 eventTokenId) external payable {
+    function enterGate(string calldata eventName, bytes32 entranceHash, address eventContractAddress, uint256 eventTokenId) external payable returns(bytes32) {
         require(msg.value >= gatePrice, "You have not paid to enter" );
-        if (msg.sender == IERC721(eventContractAddress).ownerOf(eventTokenId) == msg.sender) {
-            bytes32 eventHash = keccak256(abi.encode(eventName, eventContractAddress));
-        } else {
-            return false;
-        }
-    }
-
-    //if you do not want to have a passcode you can just verify without a passcode
-    function enterGatePublic(bytes32 eventName, address originContractAddress, uint256 originTokenId) external payable returns (bytes32) {
-      require(msg.value >= gatePrice, "You have not paid to enter" );
-      if (nfProof.validateVerifyUser(originContractAddress, originTokenId, msg.sender) == true){
-        bytes32 eventHash = keccak256(abi.encode(eventName, originContractAddress));
-        bytes32 entranceHash = keccak256(abi.encode(eventName, originContractAddress, originTokenId, msg.sender));
-        emit EnterGate(eventName, eventHash, msg.sender, block.timestamp, originContractAddress, originTokenId, entranceHash);
-        return eventHash;
-      } else {
-        require(IERC721(originContractAddress).ownerOf(originTokenId) == msg.sender, "You do not own this NFT");
-        bytes32 eventHash = keccak256(abi.encode(eventName, originContractAddress));
-        bytes32 entranceHash = keccak256(abi.encode(eventName, originContractAddress, originTokenId, msg.sender));
-        emit EnterGate(eventName, eventHash, msg.sender, block.timestamp,originContractAddress, originTokenId, entranceHash);
-        return eventHash;
-      }
+        require(IERC721(eventContractAddress).ownerOf(eventTokenId) == msg.sender) ;
+        bytes32 eventHash = keccak256(abi.encode(eventName, eventContractAddress));
+        emit EnterGate(eventName, msg.sender, entranceHash, block.timestamp, eventContractAddress, eventTokenId, eventHash);
+        return entranceHash;  
     }
 
     function tokenGateWithdraw() public onlyOwner {
