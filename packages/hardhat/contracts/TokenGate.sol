@@ -42,6 +42,16 @@ contract TokenGate is Ownable {
         return entranceHash;  
     }
 
+    function testHash(address testAddress, uint256 eventTokenId) external payable returns(bool) {
+        bytes32 entranceHash = keccak256(abi.encode(msg.sender, eventTokenId));
+        bytes32 compareHash = keccak256(abi.encode(testAddress, eventTokenId));
+        if(entranceHash == compareHash){
+          return true;
+        } else {
+          return false;
+        }
+    }
+
     function tokenGateWithdraw() public onlyOwner {
       address owner = msg.sender;
       (bool succ, )= owner.call{value:address(this).balance}("");
