@@ -17,6 +17,26 @@ export default function UserGate({
   writeContracts,
 }) {
   const [newPurpose, setNewPurpose] = useState("loading...");
+  const [qrCodeValue, setQRCodeValue] = useState();
+  const handleEnterClick = async () => {
+    const result = tx(writeContracts.TokenGate.enterGate(), update => {
+      console.log("📡 Transaction Update:", update);
+      if (update && (update.status === "confirmed" || update.status === 1)) {
+        console.log(" 🍾 Transaction " + update.hash + " finished!");
+        console.log(
+          " ⛽️ " +
+            update.gasUsed +
+            "/" +
+            (update.gasLimit || update.gas) +
+            " @ " +
+            parseFloat(update.gasPrice) / 1000000000 +
+            " gwei",
+        );
+      }
+    });
+    console.log("awaiting metamask/web3 confirm result...", result);
+    console.log(await result);
+  };
 
   return (
     <div>
@@ -24,6 +44,9 @@ export default function UserGate({
         ⚙️ Here is an example UI that displays and sets the purpose in your smart contract:
       */}
       <div style={{ border: "1px solid #cccccc", padding: 16, width: 400, margin: "auto", marginTop: 64 }}>
+        <Button style={{ marginTop: 8 }} onClick={() => handleEnterClick()}>
+          Enter Event
+        </Button>
         <h2>Example UI:</h2>
         <h4>purpose: {purpose}</h4>
         <Divider />
