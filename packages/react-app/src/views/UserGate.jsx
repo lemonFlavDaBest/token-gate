@@ -2,7 +2,7 @@ import { Button, Card, DatePicker, Divider, Input, Progress, Slider, Spin, Switc
 import React, { useState } from "react";
 import { utils } from "ethers";
 import { SyncOutlined } from "@ant-design/icons";
-
+import { useParams } from "react-router-dom";
 import { Address, Balance, Events } from "../components";
 
 export default function UserGate({
@@ -17,9 +17,12 @@ export default function UserGate({
   writeContracts,
 }) {
   const [newPurpose, setNewPurpose] = useState("loading...");
+  const { event_name, event_contract } = useParams();
+  const [tokenId, setTokenId] = useState();
   const [qrCodeValue, setQRCodeValue] = useState();
+
   const handleEnterClick = async () => {
-    const result = tx(writeContracts.TokenGate.enterGate(), update => {
+    const result = tx(writeContracts.TokenGate.enterGateV2(event_name, event_contract, tokenId), update => {
       console.log("📡 Transaction Update:", update);
       if (update && (update.status === "confirmed" || update.status === 1)) {
         console.log(" 🍾 Transaction " + update.hash + " finished!");
