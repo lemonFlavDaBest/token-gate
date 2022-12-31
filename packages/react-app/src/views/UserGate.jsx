@@ -47,6 +47,7 @@ export default function UserGate({
         ⚙️ Here is an example UI that displays and sets the purpose in your smart contract:
       */}
       <div style={{ border: "1px solid #cccccc", padding: 16, width: 400, margin: "auto", marginTop: 64 }}>
+        <Input value={tokenId} onChange={e => setTokenId(e.target.value)}></Input>
         <Button style={{ marginTop: 8 }} onClick={() => handleEnterClick()}>
           Enter Event
         </Button>
