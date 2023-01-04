@@ -4,6 +4,7 @@ import { utils } from "ethers";
 import { SyncOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import { Address, Balance, Events } from "../components";
+import QR from "qrcode.react";
 
 export default function UserGate({
   purpose,
@@ -20,6 +21,10 @@ export default function UserGate({
   const { event_name, event_contract } = useParams();
   const [tokenId, setTokenId] = useState();
   const [qrCodeValue, setQRCodeValue] = useState();
+
+  const [yourTokens, setYourTokens] = useState();
+
+  //use the alchemy nftAPI lol
 
   const handleEnterClick = async () => {
     const result = tx(writeContracts.TokenGate.enterGateV2(event_name, event_contract, tokenId), update => {
