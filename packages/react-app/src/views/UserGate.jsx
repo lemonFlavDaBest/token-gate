@@ -19,14 +19,19 @@ export default function UserGate({
 }) {
   const [newPurpose, setNewPurpose] = useState("loading...");
   const { event_name, event_contract } = useParams();
-  const [tokenId, setTokenId] = useState();
-  const [qrCode, setQRCode] = useState();
+  const [tokenId, setTokenId] = useState(null);
+  const [qrCodeValue, setQRCodeValue] = useState();
   const [yourTokens, setYourTokens] = useState();
+  const [showQR, setShowQR] = useState(false);
 
   useEffect(() => {
     const updateYourQR = async () => {
-      const qrValue = address + tokenId;
-      setQRCode(qrValue);
+      if (tokenId) {
+        const qrValue = address + tokenId;
+        setQRCodeValue(qrValue);
+      } else {
+        setQRCodeValue(null);
+      }
     };
     updateYourQR();
   }, [address, tokenId]);
@@ -64,6 +69,10 @@ export default function UserGate({
         <Address address={address} ensProvider={mainnetProvider} fontSize={16} />
         <Divider />
         <Input value={tokenId} onChange={e => setTokenId(e.target.value)}></Input>
+        <Button style={{ marginTop: 8 }} onClick={() => !showQR}>
+          Display your QR
+        </Button>
+        {showQR && <QR value={qrCodeValue} renderAs="canvas" />}
         <Button style={{ marginTop: 8 }} onClick={() => handleEnterClick()}>
           Enter Event
         </Button>
