@@ -1,5 +1,5 @@
 import { Button, Card, DatePicker, Divider, Input, Progress, Slider, Spin, Switch } from "antd";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { utils } from "ethers";
 import { SyncOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
@@ -21,10 +21,14 @@ export default function UserGate({
   const { event_name, event_contract } = useParams();
   const [tokenId, setTokenId] = useState();
   const [qrCodeValue, setQRCodeValue] = useState();
-
   const [yourTokens, setYourTokens] = useState();
 
-  //use the alchemy nftAPI lol
+  useEffect(() => {
+    const updateYourQR = async () => {};
+    updateYourQR();
+  }, [address, tokenId]);
+
+  //use the alchemy nftAPI  to get a list of your tokens that you can choose from
 
   const handleEnterClick = async () => {
     const result = tx(writeContracts.TokenGate.enterGateV2(event_name, event_contract, tokenId), update => {
@@ -52,6 +56,10 @@ export default function UserGate({
         ⚙️ Here is an example UI that displays and sets the purpose in your smart contract:
       */}
       <div style={{ border: "1px solid #cccccc", padding: 16, width: 400, margin: "auto", marginTop: 64 }}>
+        <Divider />
+        Your Address:
+        <Address address={address} ensProvider={mainnetProvider} fontSize={16} />
+        <Divider />
         <Input value={tokenId} onChange={e => setTokenId(e.target.value)}></Input>
         <Button style={{ marginTop: 8 }} onClick={() => handleEnterClick()}>
           Enter Event
