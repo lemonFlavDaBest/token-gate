@@ -20,11 +20,14 @@ export default function UserGate({
   const [newPurpose, setNewPurpose] = useState("loading...");
   const { event_name, event_contract } = useParams();
   const [tokenId, setTokenId] = useState();
-  const [qrCodeValue, setQRCodeValue] = useState();
+  const [qrCode, setQRCode] = useState();
   const [yourTokens, setYourTokens] = useState();
 
   useEffect(() => {
-    const updateYourQR = async () => {};
+    const updateYourQR = async () => {
+      const qrValue = address + tokenId;
+      setQRCode(qrValue);
+    };
     updateYourQR();
   }, [address, tokenId]);
 
