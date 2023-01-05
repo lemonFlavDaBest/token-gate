@@ -337,22 +337,27 @@ function App(props) {
             */}
 
           <Contract
-            name="TokenGate"
-            price={price}
-            signer={userSigner}
-            provider={localProvider}
-            address={address}
-            blockExplorer={blockExplorer}
-            contractConfig={contractConfig}
-          />
-          <Contract
             name="SampleNFT"
             price={price}
             signer={userSigner}
+            mainnetProvider={mainnetProvider}
             provider={localProvider}
             address={address}
             blockExplorer={blockExplorer}
             contractConfig={contractConfig}
+            chainId={selectedChainId}
+          />
+
+          <Contract
+            name="TokenGate"
+            price={price}
+            signer={userSigner}
+            mainnetProvider={mainnetProvider}
+            provider={localProvider}
+            address={address}
+            blockExplorer={blockExplorer}
+            contractConfig={contractConfig}
+            chainId={selectedChainId}
           />
         </Route>
         <Route path="/hints">
@@ -421,7 +426,7 @@ function App(props) {
             blockExplorer={blockExplorer}
           />
         </Route>
-        <Route path="/usergate">
+        <Route path="/usergate/:event_name/:event_contract">
           <UserGate
             address={address}
             userSigner={userSigner}
