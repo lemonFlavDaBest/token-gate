@@ -19,6 +19,8 @@ export default function UserGate({
 }) {
   const [newPurpose, setNewPurpose] = useState("loading...");
   const { event_name, event_contract } = useParams();
+  console.log("event_name", event_name);
+  console.log("event_contract", event_contract);
   const [tokenId, setTokenId] = useState(null);
   const [qrCodeValue, setQRCodeValue] = useState();
   const [yourTokens, setYourTokens] = useState();
@@ -39,6 +41,7 @@ export default function UserGate({
   //use the alchemy nftAPI  to get a list of your tokens that you can choose from
 
   const handleEnterClick = async () => {
+    console.log(event_name, event_contract, tokenId);
     const result = tx(writeContracts.TokenGate.enterGateV2(event_name, event_contract, tokenId), update => {
       console.log("📡 Transaction Update:", update);
       if (update && (update.status === "confirmed" || update.status === 1)) {
@@ -68,8 +71,9 @@ export default function UserGate({
         Your Address:
         <Address address={address} ensProvider={mainnetProvider} fontSize={16} />
         <Divider />
+        Enter Token ID
         <Input value={tokenId} onChange={e => setTokenId(e.target.value)}></Input>
-        <Button style={{ marginTop: 8 }} onClick={() => !showQR}>
+        <Button style={{ marginTop: 8 }} onClick={() => setShowQR(!showQR)}>
           Display your QR
         </Button>
         {showQR && <QR value={qrCodeValue} renderAs="canvas" />}
