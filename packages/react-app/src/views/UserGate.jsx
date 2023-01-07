@@ -42,7 +42,7 @@ export default function UserGate({
 
   const handleEnterClick = async () => {
     console.log(event_name, event_contract, tokenId);
-    const result = tx(writeContracts.TokenGate.enterGateV2(event_name, event_contract, tokenId), update => {
+    const result = tx(writeContracts.TokenGate.enterGate(event_name, event_contract, tokenId), update => {
       console.log("📡 Transaction Update:", update);
       if (update && (update.status === "confirmed" || update.status === 1)) {
         console.log(" 🍾 Transaction " + update.hash + " finished!");
