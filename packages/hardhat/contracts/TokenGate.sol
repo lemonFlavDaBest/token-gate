@@ -25,31 +25,14 @@ contract TokenGate is Ownable {
     //this just adds some functionality if you want to enter a passcode
     //entrance Hash is computed by the ticketgate/booth. and used to listen for events with that hash
     //entrancehash should be calculated on the run
-    function enterGate(string calldata eventName, bytes32 entranceHash, address eventContractAddress, uint256 eventTokenId) external payable returns(bytes32) {
-        require(msg.value >= gatePrice, "You have not paid to enter" );
-        require(IERC721(eventContractAddress).ownerOf(eventTokenId) == msg.sender) ;
-        bytes32 eventHash = keccak256(abi.encode(eventName, eventContractAddress));
-        emit EnterGate(eventName, msg.sender, entranceHash, block.timestamp, eventContractAddress, eventTokenId, eventHash);
-        return entranceHash;  
-    }
 
-    function enterGateV2(string calldata eventName, address eventContractAddress, uint256 eventTokenId) external payable returns(bytes32) {
+    function enterGate(string calldata eventName, address eventContractAddress, uint256 eventTokenId) external payable returns(bytes32) {
         require(msg.value >= gatePrice, "You have not paid to enter" );
         require(IERC721(eventContractAddress).ownerOf(eventTokenId) == msg.sender) ;
         bytes32 eventHash = keccak256(abi.encode(eventName, eventContractAddress));
         bytes32 entranceHash = keccak256(abi.encode(msg.sender, eventTokenId));
         emit EnterGate(eventName, msg.sender, entranceHash, block.timestamp, eventContractAddress, eventTokenId, eventHash);
         return entranceHash;  
-    }
-
-    function testHash(address testAddress, uint256 eventTokenId) external payable returns(bool) {
-        bytes32 entranceHash = keccak256(abi.encode(msg.sender, eventTokenId));
-        bytes32 compareHash = keccak256(abi.encode(testAddress, eventTokenId));
-        if(entranceHash == compareHash){
-          return true;
-        } else {
-          return false;
-        }
     }
 
     function tokenGateWithdraw() public onlyOwner {
