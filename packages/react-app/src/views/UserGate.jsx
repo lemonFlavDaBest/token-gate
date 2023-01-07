@@ -76,7 +76,11 @@ export default function UserGate({
         <Button style={{ marginTop: 8 }} onClick={() => setShowQR(!showQR)}>
           Display your QR
         </Button>
-        {showQR && <QR value={qrCodeValue} renderAs="canvas" />}
+        {showQR && (
+          <div style={{ padding: 8, margin: "auto" }}>
+            <QR value={qrCodeValue} renderAs="canvas" />
+          </div>
+        )}
         <Button style={{ marginTop: 8 }} onClick={() => handleEnterClick()}>
           Enter Event
         </Button>
