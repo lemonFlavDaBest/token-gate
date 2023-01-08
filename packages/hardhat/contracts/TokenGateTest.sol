@@ -8,18 +8,31 @@ contract TokenGate is Ownable {
 
   //the purpose of this contract is to serve your token gating needs. Will check that the signer is either the owner of the underlying nft
   //or is the address of the NFP assigned owner
+    struct eventInfo {
+      address eventContractAddress;
+      string eventName;
+    }
 
     uint256 public gatePrice;
+    uint256 public createEventPrice;
+
+    mapping(uint256 => eventInfo) public events;
 
     event EnterGate(string eventName, address user, bytes32 entranceHash, uint256 time, address eventContractAddress, uint256 eventTokenId, bytes32 eventHash);
 
     constructor() {
       gatePrice = 0;
+      createEventPrice = 0;
     }
    
     function setGatePrice(uint256 newPrice) external onlyOwner {
         require(newPrice >= 0, "must include valid price");
         gatePrice=newPrice;
+    }
+
+    function createEvent(string calldata eventName, address eventContractAddress) external payable {
+      require(msg.value >= createEventPrice);
+
     }
 
     //this just adds some functionality if you want to enter a passcode
