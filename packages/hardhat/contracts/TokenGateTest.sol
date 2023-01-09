@@ -10,9 +10,10 @@ contract TokenGate is Ownable {
   //the purpose of this contract is to serve your token gating needs. Will check that the signer is either the owner of the underlying nft
   //or is the address of the NFP assigned owner
     struct EventInfo {
-      address eventContractAddress;
+      address eventAddress;
       string eventName;
       uint256 eventId;
+      address eventCreator;
     }
 
     using Counters for Counters.Counter;
@@ -23,7 +24,7 @@ contract TokenGate is Ownable {
     mapping(uint256 => EventInfo) public events;
 
     event CreateEvent(string eventName, address eventContractAddress, uint256 time, address eventCreator, uint256 eventId);
-    event EnterGate(string eventName, address user, bytes32 entranceHash, uint256 time, address eventContractAddress, uint256 eventTokenId, bytes32 eventHash);
+    event EnterGate(string eventName, address user, bytes32 entranceHash, uint256 time, address eventContractAddress, uint256 eventTokenId, bytes32 eventHash, uint256 eventId);
 
     constructor() {
       gatePrice = 1000; //not sure how much this is
@@ -35,18 +36,27 @@ contract TokenGate is Ownable {
         gatePrice=newPrice;
     }
 
-    function createEvent(string calldata eventName, address eventContractAddress) external payable {
+    function createEvent(string calldata _eventName, address eventContractAddress) external payable returns(uint256){
       require(msg.value >= createEventPrice);
-
+      _eventIdCounter.increment();
+      uint256 _eventId = _eventIdCounter.current();
+      EventInfo storage info = events[_eventId];
+      info.eventAddress = eventContractAddress;
+      info.eventName = _eventName;
+      info.eventId = _eventId;
+      info.eventCreator = msg.sender;
+      emit CreateEvent(_eventName, eventContractAddress, block.timestamp, msg.sender, _eventId);
+      return _eventId;
     }
 
 
-    function enterGateV2(string calldata eventName, address eventContractAddress, uint256 eventTokenId) external payable returns(bytes32) {
+    function enterGate(string memory _eventName, address eventContractAddress, uint256 eventTokenId, uint256 _eventId) external payable returns(bytes32) {
         require(msg.value >= gatePrice, "You have not paid to enter" );
+        require(events[_eventId].eventAddress == eventContractAddress, "the eventId does not match the event contract address");
         require(IERC721(eventContractAddress).ownerOf(eventTokenId) == msg.sender) ;
-        bytes32 eventHash = keccak256(abi.encode(eventName, eventContractAddress));
+        bytes32 eventHash = keccak256(abi.encode(_eventName, eventContractAddress));
         bytes32 entranceHash = keccak256(abi.encode(msg.sender, eventTokenId));
-        emit EnterGate(eventName, msg.sender, entranceHash, block.timestamp, eventContractAddress, eventTokenId, eventHash);
+        emit EnterGate(_eventName, msg.sender, entranceHash, block.timestamp, eventContractAddress, eventTokenId, eventHash, _eventId);
         return entranceHash;  
     }
 
