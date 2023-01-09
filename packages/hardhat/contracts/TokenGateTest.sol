@@ -3,26 +3,30 @@ pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract TokenGate is Ownable {
 
   //the purpose of this contract is to serve your token gating needs. Will check that the signer is either the owner of the underlying nft
   //or is the address of the NFP assigned owner
-    struct eventInfo {
+    struct Event {
       address eventContractAddress;
       string eventName;
+      uint256 eventId;
     }
 
+    using Counters for Counters.Counter;
+    Counters.Counter private _eventIdCounter;
     uint256 public gatePrice;
     uint256 public createEventPrice;
 
-    mapping(uint256 => eventInfo) public events;
+    mapping(uint256 => Event) public events;
 
     event EnterGate(string eventName, address user, bytes32 entranceHash, uint256 time, address eventContractAddress, uint256 eventTokenId, bytes32 eventHash);
 
     constructor() {
-      gatePrice = 0;
-      createEventPrice = 0;
+      gatePrice = 1000; //not sure how much this is
+      createEventPrice = 1 ether;
     }
    
     function setGatePrice(uint256 newPrice) external onlyOwner {
@@ -35,16 +39,6 @@ contract TokenGate is Ownable {
 
     }
 
-    //this just adds some functionality if you want to enter a passcode
-    //entrance Hash is computed by the ticketgate/booth. and used to listen for events with that hash
-    //entrancehash should be calculated on the run
-    function enterGate(string calldata eventName, bytes32 entranceHash, address eventContractAddress, uint256 eventTokenId) external payable returns(bytes32) {
-        require(msg.value >= gatePrice, "You have not paid to enter" );
-        require(IERC721(eventContractAddress).ownerOf(eventTokenId) == msg.sender) ;
-        bytes32 eventHash = keccak256(abi.encode(eventName, eventContractAddress));
-        emit EnterGate(eventName, msg.sender, entranceHash, block.timestamp, eventContractAddress, eventTokenId, eventHash);
-        return entranceHash;  
-    }
 
     function enterGateV2(string calldata eventName, address eventContractAddress, uint256 eventTokenId) external payable returns(bytes32) {
         require(msg.value >= gatePrice, "You have not paid to enter" );
