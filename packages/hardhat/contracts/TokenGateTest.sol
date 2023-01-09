@@ -9,7 +9,7 @@ contract TokenGate is Ownable {
 
   //the purpose of this contract is to serve your token gating needs. Will check that the signer is either the owner of the underlying nft
   //or is the address of the NFP assigned owner
-    struct Event {
+    struct EventInfo {
       address eventContractAddress;
       string eventName;
       uint256 eventId;
@@ -20,8 +20,9 @@ contract TokenGate is Ownable {
     uint256 public gatePrice;
     uint256 public createEventPrice;
 
-    mapping(uint256 => Event) public events;
+    mapping(uint256 => EventInfo) public events;
 
+    event CreateEvent(string eventName, address eventContractAddress, uint256 time, address eventCreator, uint256 eventId);
     event EnterGate(string eventName, address user, bytes32 entranceHash, uint256 time, address eventContractAddress, uint256 eventTokenId, bytes32 eventHash);
 
     constructor() {
