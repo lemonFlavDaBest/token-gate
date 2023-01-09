@@ -14,6 +14,7 @@ contract TokenGate is Ownable {
       string eventName;
       uint256 eventId;
       address eventCreator;
+      bytes32 eventHash;
     }
 
     using Counters for Counters.Counter;
@@ -22,8 +23,9 @@ contract TokenGate is Ownable {
     uint256 public createEventPrice;
 
     mapping(uint256 => EventInfo) public events;
+    mapping(bytes32 => bool) eventCreated;
 
-    event CreateEvent(string eventName, address eventContractAddress, uint256 time, address eventCreator, uint256 eventId);
+    event CreateEvent(string eventName, address eventContractAddress, uint256 time, address eventCreator, bytes32 eventHash, uint256 eventId);
     event EnterGate(string eventName, address user, bytes32 entranceHash, uint256 time, address eventContractAddress, uint256 eventTokenId, bytes32 eventHash, uint256 eventId);
 
     constructor() {
@@ -38,6 +40,8 @@ contract TokenGate is Ownable {
 
     function createEvent(string calldata _eventName, address eventContractAddress) external payable returns(uint256){
       require(msg.value >= createEventPrice);
+      bytes32 _eventHash = keccak256(abi.encode(_eventName, eventContractAddress));
+      require(eventCreated[_eventHash] != true, "event with this contract and name has already been created");
       _eventIdCounter.increment();
       uint256 _eventId = _eventIdCounter.current();
       EventInfo storage info = events[_eventId];
@@ -45,18 +49,21 @@ contract TokenGate is Ownable {
       info.eventName = _eventName;
       info.eventId = _eventId;
       info.eventCreator = msg.sender;
-      emit CreateEvent(_eventName, eventContractAddress, block.timestamp, msg.sender, _eventId);
+      info.eventHash = _eventHash;
+      eventCreated[_eventHash] = true;
+      emit CreateEvent(_eventName, eventContractAddress, block.timestamp, msg.sender, _eventHash, _eventId);
       return _eventId;
     }
 
 
     function enterGate(string memory _eventName, address eventContractAddress, uint256 eventTokenId, uint256 _eventId) external payable returns(bytes32) {
         require(msg.value >= gatePrice, "You have not paid to enter" );
+        require(events[_eventId].eventId == _eventId, "the event does not exist");
         require(events[_eventId].eventAddress == eventContractAddress, "the eventId does not match the event contract address");
         require(IERC721(eventContractAddress).ownerOf(eventTokenId) == msg.sender) ;
-        bytes32 eventHash = keccak256(abi.encode(_eventName, eventContractAddress));
+        bytes32 _eventHash = keccak256(abi.encode(_eventName, eventContractAddress));
         bytes32 entranceHash = keccak256(abi.encode(msg.sender, eventTokenId));
-        emit EnterGate(_eventName, msg.sender, entranceHash, block.timestamp, eventContractAddress, eventTokenId, eventHash, _eventId);
+        emit EnterGate(_eventName, msg.sender, entranceHash, block.timestamp, eventContractAddress, eventTokenId, _eventHash, _eventId);
         return entranceHash;  
     }
 
