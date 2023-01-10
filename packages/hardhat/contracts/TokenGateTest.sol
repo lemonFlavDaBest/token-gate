@@ -23,8 +23,8 @@ contract TokenGate is Ownable {
     uint256 public createEventPrice;
 
     mapping(uint256 => EventInfo) public events;
-    mapping(bytes32 => bool) eventCreated;
-    mapping(bytes32 => uint256) eventHashToEventId;
+    mapping(bytes32 => bool) public eventCreated;
+    mapping(bytes32 => uint256) public eventHashToEventId;
 
     event CreateEvent(string eventName, address eventContractAddress, uint256 time, address eventCreator, bytes32 indexed eventHash, uint256 indexed eventId);
     event EnterGate(string eventName, address user, bytes32 indexed entranceHash, uint256 time, address eventContractAddress, uint256 eventTokenId, bytes32 indexed eventHash, uint256 indexed eventId);
