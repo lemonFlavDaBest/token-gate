@@ -24,9 +24,10 @@ contract TokenGate is Ownable {
 
     mapping(uint256 => EventInfo) public events;
     mapping(bytes32 => bool) eventCreated;
+    mapping(bytes32 => uint256) eventHashToEventId;
 
-    event CreateEvent(string eventName, address eventContractAddress, uint256 time, address eventCreator, bytes32 eventHash, uint256 eventId);
-    event EnterGate(string eventName, address user, bytes32 entranceHash, uint256 time, address eventContractAddress, uint256 eventTokenId, bytes32 eventHash, uint256 eventId);
+    event CreateEvent(string eventName, address eventContractAddress, uint256 time, address eventCreator, bytes32 indexed eventHash, uint256 indexed eventId);
+    event EnterGate(string eventName, address user, bytes32 indexed entranceHash, uint256 time, address eventContractAddress, uint256 eventTokenId, bytes32 indexed eventHash, uint256 indexed eventId);
 
     constructor() {
       gatePrice = 1000; //not sure how much this is
@@ -51,6 +52,7 @@ contract TokenGate is Ownable {
       info.eventCreator = msg.sender;
       info.eventHash = _eventHash;
       eventCreated[_eventHash] = true;
+      eventHashToEventId[_eventHash] = _eventId;
       emit CreateEvent(_eventName, eventContractAddress, block.timestamp, msg.sender, _eventHash, _eventId);
       return _eventId;
     }
@@ -66,6 +68,7 @@ contract TokenGate is Ownable {
         emit EnterGate(_eventName, msg.sender, entranceHash, block.timestamp, eventContractAddress, eventTokenId, _eventHash, _eventId);
         return entranceHash;  
     }
+
 
     function tokenGateWithdraw() public onlyOwner {
       address owner = msg.sender;
