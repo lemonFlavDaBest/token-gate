@@ -60,10 +60,9 @@ contract TokenGate is Ownable {
 
     function enterGate(string memory _eventName, address eventContractAddress, uint256 eventTokenId, uint256 _eventId) external payable returns(bytes32) {
         require(msg.value >= gatePrice, "You have not paid to enter" );
-        require(events[_eventId].eventId == _eventId, "the event does not exist");
-        require(events[_eventId].eventAddress == eventContractAddress, "the eventId does not match the event contract address");
-        require(IERC721(eventContractAddress).ownerOf(eventTokenId) == msg.sender) ;
+        require(IERC721(eventContractAddress).ownerOf(eventTokenId) == msg.sender, "You are not the owner of this token") ;
         bytes32 _eventHash = keccak256(abi.encode(_eventName, eventContractAddress));
+        require(eventHashToEventId[_eventHash] == _eventId, "This event does not match the event ID");
         bytes32 entranceHash = keccak256(abi.encode(msg.sender, eventTokenId));
         emit EnterGate(_eventName, msg.sender, entranceHash, block.timestamp, eventContractAddress, eventTokenId, _eventHash, _eventId);
         return entranceHash;  
