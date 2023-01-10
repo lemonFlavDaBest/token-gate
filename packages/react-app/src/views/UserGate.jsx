@@ -1,4 +1,4 @@
-import { Button, Card, DatePicker, Divider, Input, Progress, Slider, Spin, Switch } from "antd";
+import { Button, Card, DatePicker, Divider, Input, Progress, Row, Slider, Spin, Switch, Col } from "antd";
 import React, { useState, useEffect } from "react";
 import { utils } from "ethers";
 import { SyncOutlined } from "@ant-design/icons";
@@ -70,20 +70,35 @@ export default function UserGate({
         <Divider />
         Your Address:
         <Address address={address} ensProvider={mainnetProvider} fontSize={16} />
-        <Divider />
-        Enter Token ID
-        <Input value={tokenId} onChange={e => setTokenId(e.target.value)}></Input>
-        <Button style={{ marginTop: 8 }} onClick={() => setShowQR(!showQR)}>
-          Display your QR
-        </Button>
-        {showQR && (
-          <div style={{ padding: 8, margin: "auto" }}>
-            <QR value={qrCodeValue} renderAs="canvas" />
-          </div>
-        )}
-        <Button style={{ marginTop: 8 }} onClick={() => handleEnterClick()}>
-          Enter Event
-        </Button>
+        <Divider orientation="left">Step 1</Divider>
+        <Row>
+          <Col span={24}>
+            Enter Token ID
+            <Input value={tokenId} onChange={e => setTokenId(e.target.value)}></Input>
+          </Col>
+        </Row>
+        <Divider orientation="left">Display QR</Divider>
+        <Row>
+          <Col span={24}>
+            <Row>
+              <Button style={{ marginTop: 8 }} onClick={() => setShowQR(!showQR)}>
+                Display your QR
+              </Button>
+            </Row>
+            {showQR && (
+              <div style={{ padding: 8, margin: "auto" }}>
+                <QR value={qrCodeValue} renderAs="canvas" />
+              </div>
+            )}
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
+            <Button style={{ marginTop: 8 }} onClick={() => handleEnterClick()}>
+              Enter Event
+            </Button>
+          </Col>
+        </Row>
         <h2>Example UI:</h2>
         <Divider />
         Your Address:
