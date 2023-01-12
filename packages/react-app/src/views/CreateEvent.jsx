@@ -5,7 +5,7 @@ import { SyncOutlined } from "@ant-design/icons";
 
 import { Address, Balance, Events } from "../components";
 
-export default function ExampleUI({
+export default function CreateEvent({
   purpose,
   address,
   mainnetProvider,
