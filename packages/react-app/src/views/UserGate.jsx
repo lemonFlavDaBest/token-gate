@@ -86,9 +86,9 @@ export default function UserGate({
               </Button>
             </Row>
             {showQR && (
-              <div style={{ padding: 8, margin: "auto" }}>
+              <Row>
                 <QR value={qrCodeValue} renderAs="canvas" />
-              </div>
+              </Row>
             )}
           </Col>
         </Row>
