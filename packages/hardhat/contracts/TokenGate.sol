@@ -31,7 +31,7 @@ contract TokenGate is Ownable {
 
     constructor() {
       gatePrice = 1000; //not sure how much this is
-      createEventPrice = 1000;
+      createEventPrice = 1000; //not sure how much this is
     }
    
     function setGatePrice(uint256 newPrice) external onlyOwner {
