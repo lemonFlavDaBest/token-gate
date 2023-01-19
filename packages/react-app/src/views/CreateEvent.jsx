@@ -39,9 +39,9 @@ export default function CreateEvent({
     <div>
       <Row justify="center" gutter={[24, 48]}>
         <Col span={18}>
-          <Title>Enter Event Name</Title>
+          <Title level={2}>Enter Event Name</Title>
           <Input onChange={e => setEventName(e.target.value)}></Input>
-          <Title>Enter Token Address</Title>
+          <Title level={4}>Enter Token Address</Title>
           <Input onChange={e => setEventContractAddress(e.target.value)}></Input>
           <Button onClick={onClickFunction}>Create</Button>
         </Col>
