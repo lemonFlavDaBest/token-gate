@@ -7,8 +7,6 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract TokenGate is Ownable {
 
-  //the purpose of this contract is to serve your token gating needs. Will check that the signer is either the owner of the underlying nft
-  //or is the address of the NFP assigned owner
     struct EventInfo {
       address eventAddress;
       string eventName;
