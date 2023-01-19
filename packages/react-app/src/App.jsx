@@ -30,7 +30,7 @@ import externalContracts from "./contracts/external_contracts";
 // contracts
 import deployedContracts from "./contracts/hardhat_contracts.json";
 import { getRPCPollTime, Transactor, Web3ModalSetup } from "./helpers";
-import { Home, ExampleUI, Hints, Subgraph, SampleNFT, UserGate } from "./views";
+import { Home, ExampleUI, Hints, Subgraph, SampleNFT, UserGate, CreateEvent } from "./views";
 import { useStaticJsonRPC } from "./hooks";
 
 const { ethers } = require("ethers");
@@ -316,8 +316,8 @@ function App(props) {
         <Menu.Item key="/exampleui">
           <Link to="/exampleui">ExampleUI</Link>
         </Menu.Item>
-        <Menu.Item key="/mainnetdai">
-          <Link to="/mainnetdai">Mainnet DAI</Link>
+        <Menu.Item key="/createevent">
+          <Link to="/createevent">Create Event</Link>
         </Menu.Item>
         <Menu.Item key="/subgraph">
           <Link to="/subgraph">Subgraph</Link>
@@ -428,6 +428,20 @@ function App(props) {
         </Route>
         <Route path="/usergate/:event_name/:event_contract">
           <UserGate
+            address={address}
+            userSigner={userSigner}
+            mainnetProvider={mainnetProvider}
+            localProvider={localProvider}
+            yourLocalBalance={yourLocalBalance}
+            price={price}
+            tx={tx}
+            writeContracts={writeContracts}
+            readContracts={readContracts}
+            blockExplorer={blockExplorer}
+          />
+        </Route>
+        <Route path="/createevent">
+          <CreateEvent
             address={address}
             userSigner={userSigner}
             mainnetProvider={mainnetProvider}
