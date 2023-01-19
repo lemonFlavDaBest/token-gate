@@ -1,4 +1,4 @@
-import { Button, Card, DatePicker, Divider, Input, Progress, Slider, Spin, Switch, Row, Col } from "antd";
+import { Button, Card, DatePicker, Divider, Input, Progress, Slider, Spin, Switch, Row, Col, Typography } from "antd";
 import React, { useState } from "react";
 import { utils } from "ethers";
 import { SyncOutlined } from "@ant-design/icons";
@@ -16,6 +16,8 @@ export default function CreateEvent({
   readContracts,
   writeContracts,
 }) {
+  const { Title } = Typography;
+
   const [eventName, setEventName] = useState("");
   const [eventContractAddress, setEventContractAddress] = useState(null);
 
@@ -35,12 +37,14 @@ export default function CreateEvent({
 
   return (
     <div>
-      <Row>
-        <h3>Enter Event Name</h3>
-        <Input onChange={e => setEventName(e.target.value)}></Input>
-        <h5>Enter Token Contract for Entry</h5>
-        <Input onChange={e => setEventContractAddress(e.target.value)}></Input>
-        <Button onClick={onClickFunction}></Button>
+      <Row justify="center" gutter={[24, 48]}>
+        <Col span={18}>
+          <Title>Enter Event Name</Title>
+          <Input onChange={e => setEventName(e.target.value)}></Input>
+          <Title>Enter Token Address</Title>
+          <Input onChange={e => setEventContractAddress(e.target.value)}></Input>
+          <Button onClick={onClickFunction}>Create</Button>
+        </Col>
       </Row>
     </div>
   );
