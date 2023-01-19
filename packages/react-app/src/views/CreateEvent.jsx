@@ -19,9 +19,29 @@ export default function CreateEvent({
   const [eventName, setEventName] = useState("");
   const [eventContractAddress, setEventContractAddress] = useState(null);
 
+  const onClickFunction = async () => {
+    const result = tx(
+      writeContracts.TokenGate.createEvent(eventName, eventContractAddress, { value: utils.parseEther("0.001") }),
+    );
+    console.log("awaiting metamask/web3 confirm result...", result);
+    console.log(await result);
+  };
+
+  /* example tx statement
+  tx(
+    writeContracts.YourContract.setPurpose("💵 Paying for this one!", { value: utils.parseEther("0.001") }),
+  );
+  */
+
   return (
     <div>
-      <Row></Row>
+      <Row>
+        <h3>Enter Event Name</h3>
+        <Input onChange={e => setEventName(e.target.value)}></Input>
+        <h5>Enter Token Contract for Entry</h5>
+        <Input onChange={e => setEventContractAddress(e.target.value)}></Input>
+        <Button onClick={onClickFunction}></Button>
+      </Row>
     </div>
   );
 }
