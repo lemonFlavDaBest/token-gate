@@ -68,8 +68,8 @@ contract TokenGate is Ownable {
 
 
     function tokenGateWithdraw() public onlyOwner {
-      address owner = msg.sender;
-      (bool succ, )= owner.call{value:address(this).balance}("");
+      address _owner = msg.sender;
+      (bool succ, )= _owner.call{value:address(this).balance}("");
       require(succ, "withdraw failed");
     }
 
