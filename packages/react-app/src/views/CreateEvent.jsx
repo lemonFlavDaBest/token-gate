@@ -22,9 +22,9 @@ export default function CreateEvent({
   const [eventContractAddress, setEventContractAddress] = useState(null);
 
   const onClickFunction = async () => {
-    const result = tx(
-      writeContracts.TokenGate.createEvent(eventName, eventContractAddress, { value: utils.parseEther("0.001") }),
-    );
+    console.log("eventName:", eventName);
+    console.log("eventContractAddress:", eventContractAddress);
+    const result = tx(writeContracts.TokenGate.createEvent(eventName, eventContractAddress, { value: 1000 }));
     console.log("awaiting metamask/web3 confirm result...", result);
     console.log(await result);
   };
