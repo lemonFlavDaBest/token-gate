@@ -36,16 +36,25 @@ export default function CreateEvent({
   */
 
   return (
-    <div>
+    <>
+      <Row justify="center" gutter={[24, 48]}>
+        <Title level={2}>Create Your Event</Title>
+      </Row>
+      <Row gutter={[24, 48]}>
+        <Col span={12}>
+          <Title level={4}>Event Name</Title>
+        </Col>
+        <Col span={12}>
+          <Input onChange={e => setEventName(e.target.value)}></Input>
+        </Col>
+      </Row>
       <Row justify="center" gutter={[24, 48]}>
         <Col span={18}>
-          <Title level={2}>Enter Event Name</Title>
-          <Input onChange={e => setEventName(e.target.value)}></Input>
-          <Title level={4}>Enter Token Address</Title>
+          <Title level={4}>Token Address</Title>
           <Input onChange={e => setEventContractAddress(e.target.value)}></Input>
           <Button onClick={onClickFunction}>Create</Button>
         </Col>
       </Row>
-    </div>
+    </>
   );
 }
