@@ -1,4 +1,18 @@
-import { Button, Card, DatePicker, Divider, Input, Progress, Slider, Spin, Switch, Row, Col, Typography } from "antd";
+import {
+  Button,
+  Space,
+  Card,
+  DatePicker,
+  Divider,
+  Input,
+  Progress,
+  Slider,
+  Spin,
+  Switch,
+  Row,
+  Col,
+  Typography,
+} from "antd";
 import React, { useState } from "react";
 import { utils } from "ethers";
 import { SyncOutlined } from "@ant-design/icons";
@@ -36,7 +50,7 @@ export default function CreateEvent({
   */
 
   return (
-    <>
+    <div>
       <Row gutter={[20, 480]}>
         <Col span={10}>
           <Title level={2}>Create Your Event</Title>
@@ -52,11 +66,11 @@ export default function CreateEvent({
           </Paragraph>
         </Col>
       </Row>
-      <Row gutter={[24, 48]}>
-        <Col span={12}>
+      <Row gutter={[24, 480]}>
+        <Col span={8}>
           <Title level={4}>Event Name</Title>
         </Col>
-        <Col span={12}>
+        <Col span={8}>
           <Input onChange={e => setEventName(e.target.value)}></Input>
         </Col>
       </Row>
@@ -67,6 +81,6 @@ export default function CreateEvent({
           <Button onClick={onClickFunction}>Create</Button>
         </Col>
       </Row>
-    </>
+    </div>
   );
 }
