@@ -16,7 +16,7 @@ export default function CreateEvent({
   readContracts,
   writeContracts,
 }) {
-  const { Title } = Typography;
+  const { Title, Text, Paragraph } = Typography;
 
   const [eventName, setEventName] = useState("");
   const [eventContractAddress, setEventContractAddress] = useState(null);
@@ -37,8 +37,20 @@ export default function CreateEvent({
 
   return (
     <>
-      <Row justify="center" gutter={[24, 48]}>
-        <Title level={2}>Create Your Event</Title>
+      <Row gutter={[20, 480]}>
+        <Col span={10}>
+          <Title level={2}>Create Your Event</Title>
+        </Col>
+        <Col span={14}>
+          <Paragraph>
+            Create your event in two simple steps:
+            <br></br>
+            1. Create an Event Name. This will make it easier to find, search for, and identify your event.
+            <br></br>
+            2. Add the contract address you want to check for. This will be the address of the NFT contract for your
+            event.
+          </Paragraph>
+        </Col>
       </Row>
       <Row gutter={[24, 48]}>
         <Col span={12}>
