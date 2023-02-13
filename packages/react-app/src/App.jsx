@@ -319,6 +319,9 @@ function App(props) {
         <Menu.Item key="/createevent">
           <Link to="/createevent">Create Event</Link>
         </Menu.Item>
+        <Menu.Item key="/usergate">
+          <Link to="/usergate">User Gate</Link>
+        </Menu.Item>
         <Menu.Item key="/subgraph">
           <Link to="/subgraph">Subgraph</Link>
         </Menu.Item>
