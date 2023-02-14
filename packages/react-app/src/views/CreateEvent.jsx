@@ -50,19 +50,21 @@ export default function CreateEvent({
   */
 
   return (
-    <div style={{ marginTop: 24 }}>
+    <div style={{ marginTop: 24, display: "flex" }}>
       <Row gutter={12} align="middle" justify="center">
         <Col span={14}>
           <Title level={2}>Create Your Event</Title>
         </Col>
         <Col span={8}>
-          <Paragraph style={{ justifySelf: "center" }}>Create your event in two simple steps:</Paragraph>
-          <Paragraph style={{ justifyContent: "left" }}>
-            1. Create an Event Name. This will make it easier to find, search for, and identify your event.
-            <br></br>
-            2. Add the contract address you want to check for. This will be the address of the NFT contract for your
-            event.
-          </Paragraph>
+          <Space direction="vertical" size="middle">
+            <Paragraph style={{ justifySelf: "center" }}>Create your event in two simple steps:</Paragraph>
+            <Paragraph style={{ justifyContent: "left" }}>
+              1. Create an Event Name. This will make it easier to find, search for, and identify your event.
+              <br></br>
+              2. Add the contract address you want to check for. This will be the address of the NFT contract for your
+              event.
+            </Paragraph>
+          </Space>
         </Col>
       </Row>
       <Row gutter={[24, 480]}>
