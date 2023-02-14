@@ -51,11 +51,9 @@ export default function CreateEvent({
 
   return (
     <div style={{ marginTop: 24 }}>
-      <Row gutter={12} align="middle">
+      <Row gutter={12} align="middle" justify="center">
         <Col span={14}>
-          <Title level={2} style={{ justifyContent: "center" }}>
-            Create Your Event
-          </Title>
+          <Title level={2}>Create Your Event</Title>
         </Col>
         <Col span={8}>
           <Paragraph style={{ justifySelf: "center" }}>Create your event in two simple steps:</Paragraph>
