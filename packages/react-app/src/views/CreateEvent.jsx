@@ -50,8 +50,8 @@ export default function CreateEvent({
   */
 
   return (
-    <div style={{ marginTop: 24, display: "flex" }}>
-      <Row gutter={12} align="middle" justify="center">
+    <div style={{ display: "flex" }}>
+      <Row gutter={12} align="middle" justify="center" style={{ marginTop: 24 }}>
         <Col span={14}>
           <Title level={2}>Create Your Event</Title>
         </Col>
@@ -67,7 +67,7 @@ export default function CreateEvent({
           </Space>
         </Col>
       </Row>
-      <Row gutter={[24, 480]}>
+      <Row gutter={[24, 480]} style={{ marginTop: 24 }}>
         <Col span={8}>
           <Title level={4}>Event Name</Title>
         </Col>
